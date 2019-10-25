@@ -250,3 +250,28 @@ function viewEmployees() {
             })
     })
 }
+
+function viewRoles() {
+  connection.query("SELECT * FROM role", function (err, results) {
+      if (err) throw err;
+      inquirer
+          .prompt([
+              {
+                  name: "roles",
+                  type: "list",
+                  choices: function () {
+                      var choiceArray = [];
+                      for (var i = 0; i < results.length; i++) {
+                          choiceArray.push(results[i].title);
+                      }
+                      return choiceArray;
+                  },
+                  // message: "What employee would you like to update?"
+              }
+          ])
+          .then(function (answer) {
+              console.table(res)
+              updateEmployee(answer.roles)
+          })
+  })
+}
