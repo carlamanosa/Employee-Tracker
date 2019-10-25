@@ -215,7 +215,7 @@ function viewDepartment() {
                       }
                       return choiceArray;
                   },
-                  message: "What Department would you like to update?"
+                  // message: "What Department would you like to update?"
               }
           ])
           .then(function (answer) {
@@ -241,7 +241,7 @@ function viewEmployees() {
                         }
                         return choiceArray;
                     },
-                    message: "What employee would you like to update?"
+                    // message: "What employee would you like to update?"
                 }
             ])
             .then(function (answer) {
