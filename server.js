@@ -199,104 +199,54 @@ function createEmployee() {
       );
     });
 }
-//     // logs the actual query being run
-//     console.log(query.sql);
-// }
 
-// function updateBid() {
-//     console.log("Updating all Rocky Road quantities...\n");
-//     var query = connection.query(
-//         "UPDATE products SET ? WHERE ?",
-//         [
-//             {
-//                 quantity: 100
-//             },
-//             {
-//                 flavor: "Rocky Road"
-//             }
-//         ],
-//         function (err, res) {
-//             if (err) throw err;
-//             console.log(res.affectedRows + " products updated!\n");
-//             // Call deleteProduct AFTER the UPDATE completes
-//             deleteProduct();
-//         }
-//     );
+function viewDepartment() {
+  connection.query("SELECT * FROM department", function (err, results) {
+      if (err) throw err;
+      inquirer
+          .prompt([
+              {
+                  name: "department",
+                  type: "list",
+                  choices: function () {
+                      var choiceArray = [];
+                      for (var i = 0; i < results.length; i++) {
+                          choiceArray.push(results[i].name);
+                      }
+                      return choiceArray;
+                  },
+                  message: "What Department would you like to update?"
+              }
+          ])
+          .then(function (answer) {
+              console.table(res)
+              updateEmployee(answer.department)
+          })
+  })
+}
 
-//     // logs the actual query being run
-//     console.log(query.sql);
-// }
 
-// function readProducts(item_status) {
-//     console.log("Selecting all products...\n");
-//     connection.query("SELECT * FROM products WHERE ?",
-//         { bid_status: item_status },
-//         async function (err, res) {
-//             if (err) throw err;
-//             // Log all results of the SELECT statement
-//             console.table(res);
-//             const placeBid = await inquirer.prompt([
-//                 {
-//                     type: "list",
-//                     name: "place_bid",
-//                     message: "would you like to place a bid on an item?",
-//                     choices: ["yes", "no"]
-//                 },
-//             ]); if (placeBid.place_bid === "no") {
-//                 return promptUser();
-//             } else {
-//                 bidItem(res);
-//             }
-//         });
-// }
-
-// async function bidItem(res) {
-//     console.table(res);
-//     const itemArr = [];
-//     res.forEach((element) => itemArr.push(element.item_title));
-//     const bidItem = await inquirer.prompt([
-//         {
-//             type: "list",
-//             name: "place_bid",
-//             message: "Which item would you like to place a bid on",
-//             choices: itemArr
-//         }
-//     ]);
-//     displayBidItem(bidItem.place_bid);
-// }
-
-// function displayBidItem(bidItem) {
-//     connection.query("SELECT * FROM products WHERE ?",
-//         { item_title: bidItem },
-//         async function (err, res) {
-//             if (err) throw err;
-//             // Log all results of the SELECT statement
-//             console.table(res);
-//             getBid(res);
-//         });
-// }
-
-// async function getBid(res) {
-//     try {
-//         const userBid = await inquirer.prompt([
-//             {
-//                 type: "number",
-//                 name: "bid",
-//                 message: "Place Your Bid!"
-//             }
-//         ]);
-
-//         const startPrice = res[0].start_price;
-//         const highBid = res[0].hightest_bid;
-//         const newBid = userBid.bid;
-
-//         if (newBid > startPrice && newBid > highBid) {
-//             console.log("Bid Successful!");
-//         } else {
-//             console.log("Bid too low");
-//             getBid();
-//         }
-//     } catch (err) {
-//         console.log(err);
-//     }
-// };
+function viewEmployees() {
+    connection.query("SELECT * FROM employee", function (err, results) {
+        if (err) throw err;
+        inquirer
+            .prompt([
+                {
+                    name: "employees",
+                    type: "list",
+                    choices: function () {
+                        var choiceArray = [];
+                        for (var i = 0; i < results.length; i++) {
+                            choiceArray.push(results[i].last_name);
+                        }
+                        return choiceArray;
+                    },
+                    message: "What employee would you like to update?"
+                }
+            ])
+            .then(function (answer) {
+                console.table(res)
+                updateEmployee(answer.employees)
+            })
+    })
+}
